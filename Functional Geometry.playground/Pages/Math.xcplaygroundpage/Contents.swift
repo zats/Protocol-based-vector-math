@@ -10,4 +10,6 @@ point * 3
 let result: CGVector = (point + size) * 3
 size2 / 3
 
+-size
+
 print("✅")

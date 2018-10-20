@@ -65,25 +65,30 @@ public protocol Subtractable {
   static func -(lhs: Self, rhs: Self) -> Self
 }
 
+public protocol Negetable {
+  static prefix func -(lhs: Self) -> Self
+}
+
 //: `Arithmeticable`™️
 public typealias Arithmeticable = Addable & Subtractable & Multipliable & Divisable
+public typealias SignedArithmeticable = Arithmeticable & Negetable
 
 // MARK: - Conform builtin types to basic math protocols
 
-extension Int: Arithmeticable {}
-extension Int8: Arithmeticable {}
-extension Int16: Arithmeticable {}
-extension Int32: Arithmeticable {}
-extension Int64: Arithmeticable {}
+extension Int: SignedArithmeticable {}
+extension Int8: SignedArithmeticable {}
+extension Int16: SignedArithmeticable {}
+extension Int32: SignedArithmeticable {}
+extension Int64: SignedArithmeticable {}
 extension UInt: Arithmeticable {}
 extension UInt8: Arithmeticable {}
 extension UInt16: Arithmeticable {}
 extension UInt32: Arithmeticable {}
 extension UInt64: Arithmeticable {}
-extension CGFloat: Arithmeticable {}
-extension Float32: Arithmeticable {}
-extension Float64: Arithmeticable {}
-extension Float80: Arithmeticable {}
+extension CGFloat: SignedArithmeticable {}
+extension Float32: SignedArithmeticable {}
+extension Float64: SignedArithmeticable {}
+extension Float80: SignedArithmeticable {}
 
 // MARK: - ✨ Magic ✨
 
@@ -119,7 +124,7 @@ extension Tuple2Expressable where Element: Addable {
   }
 }
 
-//MARK: - Subtractable
+// MARK: - Subtractable
 
 extension Tuple2Expressable where Element: Subtractable {
   public static func -(lhs: Self, rhs: Self) -> Self {
@@ -131,3 +136,10 @@ extension Tuple2Expressable where Element: Subtractable {
   }
 }
 
+// MARK: - Negetable
+
+extension Tuple2Expressable where Element: Negetable {
+  public static prefix func -(lhs: Self) -> Self {
+    return Self((-lhs.tuple2Value.0, -lhs.tuple2Value.1))
+  }
+}
