@@ -110,6 +110,10 @@ extension Tuple2Expressable where Element: Divisable {
 //: ### Make `Tuple2Expressable` implicitly `Addable` if its elements are `Addable`
 
 extension Tuple2Expressable where Element: Addable {
+  static func +(lhs: Self, rhs: Self) -> Self {
+    return Self((lhs.tuple2Value.0 + rhs.tuple2Value.0, lhs.tuple2Value.1 + rhs.tuple2Value.1))
+  }
+
   static func +<T: Tuple2Expressable, U: Tuple2Expressable>(lhs: Self, rhs: T) -> U where T.Element == Element, U.Element == Element {
     return U((lhs.tuple2Value.0 + rhs.tuple2Value.0, lhs.tuple2Value.1 + rhs.tuple2Value.1))
   }
@@ -118,6 +122,10 @@ extension Tuple2Expressable where Element: Addable {
 //: ### Make `Tuple2Expressable` implicitly `Subtractable` if its elements are `Subtractable`
 
 extension Tuple2Expressable where Element: Subtractable {
+  static func -(lhs: Self, rhs: Self) -> Self {
+    return Self((lhs.tuple2Value.0 - rhs.tuple2Value.0, lhs.tuple2Value.1 - rhs.tuple2Value.1))
+  }
+
   static func -<T: Tuple2Expressable, U: Tuple2Expressable>(lhs: Self, rhs: T) -> U where T.Element == Element, U.Element == Element {
     return U((lhs.tuple2Value.0 - rhs.tuple2Value.0, lhs.tuple2Value.1 - rhs.tuple2Value.1))
   }
@@ -125,14 +133,14 @@ extension Tuple2Expressable where Element: Subtractable {
 
 //: ## Usage
 
-let size = CGSize((1, 2))
-let size2: CGSize = size + size
+let size = CGSize(width: 1, height: 2)
+let size2 = size + size // {2, 4}
+size2 * 4 // {8, 16}
 
-let point = CGPoint((1.5, 20.3))
-point * 3
-4 * point
-let result: CGPoint = (point + size) * 3
-
-size2/3
+let point = CGPoint(x: 1.5, y: 20.3)
+point * 3 // {4.5, 60.9}
+4 * point // {6, 81.2}
+let result: CGPoint = (point + size) * 3 // 7.5, 66.9
+size2 / 3 // {0.667, 1.333}
 
 print("✅")
